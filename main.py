@@ -19,7 +19,7 @@ def get_base64_logo(path):
 LOGO_PATH = "logo.png"   # same folder
 
 try:
-    logo_base64 = get_base64_logo(LOGO_PATH)
+    logo_base64 = get_base64_logo(image_t2.png)
     logo_html = f"<img src='data:image/png;base64,{logo_base64}' width='60'>"
 except:
     logo_html = ""
