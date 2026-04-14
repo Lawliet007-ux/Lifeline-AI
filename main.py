@@ -1,7 +1,6 @@
 import streamlit as st
 import random
 import time
-import base64
 
 # ---------------- CONFIG ----------------
 st.set_page_config(
@@ -10,67 +9,64 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- LOAD LOGO (FROM FILE) ----------------
-def get_base64_logo(path):
-    with open(path, "rb") as f:
-        return base64.b64encode(f.read()).decode()
+# ---------------- LOGO (FROM GITHUB) ----------------
+LOGO_URL = "https://raw.githubusercontent.com/Lawliet007-ux/Lifeline-AI/main/image_t2.png"
 
-# 👉 PUT YOUR LOGO FILE NAME HERE
-LOGO_PATH = "logo.png"   # same folder
+logo_html = f"""
+<img src="{LOGO_URL}" width="70"
+style="border-radius:12px; box-shadow: 0 0 15px rgba(59,130,246,0.6);">
+"""
 
-try:
-    logo_base64 = get_base64_logo(image_t2.png)
-    logo_html = f"<img src='data:image/png;base64,{logo_base64}' width='60'>"
-except:
-    logo_html = ""
-
-# ---------------- CUSTOM CSS (🔥 UI MAGIC) ----------------
-st.markdown(f"""
+# ---------------- CUSTOM CSS ----------------
+st.markdown("""
 <style>
+
 /* Background */
-.stApp {{
+.stApp {
     background: linear-gradient(135deg, #0f172a, #020617);
     color: white;
-}}
+}
 
-/* Glass cards */
-.glass {{
+/* Glass card */
+.glass {
     background: rgba(255, 255, 255, 0.05);
     padding: 20px;
     border-radius: 15px;
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255,255,255,0.1);
-}}
+}
 
 /* Title */
-.title {{
-    font-size: 40px;
-    font-weight: bold;
-}}
+.title {
+    font-size: 42px;
+    font-weight: 700;
+}
 
-/* Status colors */
-.safe {{
+/* Status styles */
+.safe {
     color: #22c55e;
     font-size: 22px;
-}}
-.warning {{
+}
+.warning {
     color: #facc15;
     font-size: 22px;
-}}
-.danger {{
+}
+.danger {
     color: #ef4444;
-    font-size: 24px;
+    font-size: 26px;
     font-weight: bold;
-}}
+}
 
 /* Button */
-.stButton>button {{
+.stButton>button {
     background: linear-gradient(90deg, #06b6d4, #3b82f6);
     color: white;
-    border-radius: 10px;
+    border-radius: 12px;
     height: 50px;
     font-size: 18px;
-}}
+    border: none;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -88,7 +84,7 @@ st.markdown("---")
 
 # ---------------- HERO ----------------
 st.markdown("""
-### 🚨 Every 4 minutes, someone dies in a road accident
+### 🚨 Every 4 minutes, someone dies in a road accident  
 
 Not always because of the crash...  
 **But because help didn’t arrive on time**
@@ -108,7 +104,7 @@ col3.markdown("<div class='glass'>🤖 AI Engine<br>False alert reduction</div>"
 st.markdown("---")
 
 # ---------------- SIMULATION ----------------
-st.subheader("🧠 AI Detection System")
+st.subheader("🧠 AI Detection Dashboard")
 
 simulate = st.button("🚨 Start Live Simulation")
 
@@ -117,6 +113,7 @@ metrics = st.empty()
 alert = st.empty()
 map_box = st.empty()
 
+# ---------------- DATA ----------------
 def generate_data():
     return {
         "speed": random.randint(10, 120),
@@ -134,6 +131,7 @@ def predict(data):
         return "warning"
     return "safe"
 
+# ---------------- SIMULATION LOOP ----------------
 if simulate:
     for _ in range(12):
         d = generate_data()
@@ -151,15 +149,15 @@ if simulate:
         metrics.markdown(f"""
         <div class='glass'>
         🚗 Speed: {d['speed']} km/h<br>
-        💥 Impact: {round(d['impact'],2)}<br>
-        🔄 Rotation: {round(d['rotation'],2)}°<br>
+        💥 Impact Force: {round(d['impact'],2)}<br>
+        🔄 Rotation Angle: {round(d['rotation'],2)}°<br>
         </div>
         """, unsafe_allow_html=True)
 
         # MAP
-        map_box.map({"lat":[d["lat"]], "lon":[d["lon"]]})
+        map_box.map({"lat": [d["lat"]], "lon": [d["lon"]]})
 
-        # ALERT
+        # ALERT SYSTEM
         if state == "danger":
             alert.error("📡 Ambulance + Emergency Contacts Alerted!")
         elif state == "warning":
@@ -174,10 +172,11 @@ else:
 st.markdown("---")
 st.markdown("""
 ### ⚙️ How It Works
-- Sensors detect motion  
-- AI analyzes crash patterns  
-- GPS identifies location  
-- Alerts sent instantly  
+
+- 📱 Motion sensors detect sudden changes  
+- 🤖 AI analyzes impact patterns  
+- 📍 GPS pinpoints exact location  
+- 🚑 Alerts sent instantly  
 
 **No delay. No panic. Just action.**
 """)
